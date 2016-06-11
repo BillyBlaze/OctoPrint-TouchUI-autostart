@@ -1,8 +1,9 @@
 #!/bin/sh
 unclutter -idle 0.1 -root &		
 matchbox-window-manager &		
-chromium-browser --kiosk --no-first-run \
+chromium-browser --no-first-run \
+	--user-agent=touchui-chrome-touchscreen \
 	--remote-debugging-port=9222 --enable-logging \
 	--disable-java --disable-plugins --disable-extensions --disable-infobars \
-	--disk-cache-size=1048576 --force-device-scale-factor=1 --start-maximized \
-	--window-position=0,0 /home/pi/TouchUI-autostart/load-screen/startup.html
+	--disk-cache-size=1048576 --start-maximized --window-position=0,0 --new-window \
+	/home/pi/TouchUI-autostart/load-screen/startup.html
