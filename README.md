@@ -4,6 +4,7 @@ These are the startup files for [TouchUI](https://github.com/BillyBlaze/OctoPrin
 
 This package contains:
  1. Deamon script
+ 1. xinit script
  1. Splash screen 
  
 ## Reporting issue's
