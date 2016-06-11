@@ -1,0 +1,117 @@
+html, body {
+	background: black;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+* {
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+}
+
+body.hide svg,
+body.hide #progress,
+body.hide #error {
+	display: none;
+
+	-webkit-animation: none;
+	animation: none;
+}
+body.hide #content {
+	display: block !important;
+}
+
+#content {
+	position: absolute; 
+	border: 0 none;
+	width: 100%; 
+	height: 100%; 
+	top: 0; 
+	left: 0; 
+	overflow: hidden;
+}
+
+#progress {
+	margin: 10px 0 0;
+	font-family: monospace;
+	font-weight: bold;
+	font-size: 16px;
+	color: #00B0FF;
+}
+#progress span {
+	padding: 2px 0;
+	width: 19px;
+	display: inline-block;
+	font-weight: bold;
+	font-family: monospace;
+	font-size: 12px;
+	background-color: #00B0FF;
+	color: black;
+	text-align: center;
+	border-radius: 50%;
+	position: relative;
+	top: -2px;
+}
+
+#error {
+	margin: 5px 0 0;
+	font-family: monospace;
+	font-size: 12px;
+	color: #00B0FF;
+}
+
+.error svg {
+	fill: #ff0000;
+	
+	-webkit-animation: none;
+	animation: none;
+}
+
+.error #progress,
+.error #error {
+	color: #ff0000;
+}
+
+svg {
+	fill: #00B0FF;
+	
+	-webkit-animation: fillChange 5s infinite;
+	animation: fillChange 5s infinite;
+	
+	will-change: opacity;
+}
+
+@media (max-width: 320px) {
+
+	#logo {
+		transform: scale(0.7);
+	}
+
+	#progress {
+		font-size: 13px;
+	}
+
+}
+
+@keyframes fillChange {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}

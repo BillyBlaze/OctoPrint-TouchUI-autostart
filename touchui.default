@@ -1,0 +1,26 @@
+# Configuration for /etc/init.d/touchui
+
+# The init.d script will only run if this variable non-empty.
+TOUCHUI_USER=pi
+
+# Where is the xinit file locatated
+TOUCHUI_DIR="TouchUI-autostart"
+
+# And what xinit file are we looking for
+TOUCHUI_FILE="chromium.xinit"
+
+# Path to the xinit executable, use this to override the default setting "/usr/bin/xinit"
+#DAEMON=/path/to/xinit/executable
+
+# What arguments to pass to xinit, usually no need to touch this
+DAEMON_ARGS=/home/$TOUCHUI_USER/$TOUCHUI_DIR/$TOUCHUI_FILE
+
+# Umask of files touchui generates, Change this to 000 if running touchui as its own, separate user
+UMASK=022
+
+# Process priority, 0 here will result in a priority 20 process.
+# -2 ensures touchui has a slight priority over user processes.
+NICELEVEL=-2
+
+# Should we run at startup?
+START=yes

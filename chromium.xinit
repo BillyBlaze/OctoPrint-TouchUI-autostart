@@ -1,0 +1,9 @@
+#!/bin/sh
+unclutter -idle 0.1 -root &		
+matchbox-window-manager &		
+chromium-browser --kiosk --no-first-run \
+	--remote-debugging-port=9222 --enable-logging \
+	--disable-java --disable-plugins --disable-extensions --disabled \
+	--disk-cache-size=1048576 --show-fps-counter --start-maximized \
+	--force-device-scale-factor=1 --enable-tracing-output=/home/pi/input.log \
+	--window-position=0,0 /home/pi/TouchUI-autostart/load-screen/startup.html
