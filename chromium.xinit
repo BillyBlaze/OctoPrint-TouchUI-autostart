@@ -1,7 +1,7 @@
 #!/bin/sh
 unclutter -idle 0.1 -root &		
 matchbox-window-manager &		
-chromium-browser --no-first-run \
+chromium-browser --kiosk --no-first-run \
 	--user-agent=touchui-chrome-touchscreen \
 	--remote-debugging-port=9222 --enable-logging \
 	--disable-java --disable-plugins --disable-extensions --disable-infobars \
