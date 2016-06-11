@@ -3,6 +3,6 @@ unclutter -idle 0.1 -root &
 matchbox-window-manager &		
 chromium-browser --kiosk --no-first-run \
 	--remote-debugging-port=9222 --enable-logging \
-	--disable-java --disable-plugins --disable-extensions --disabled \
+	--disable-java --disable-plugins --disable-extensions --disable-infobars \
 	--disk-cache-size=1048576 --force-device-scale-factor=1 --start-maximized \
 	--window-position=0,0 /home/pi/TouchUI-autostart/load-screen/startup.html
