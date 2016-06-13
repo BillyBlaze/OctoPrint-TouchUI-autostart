@@ -1,9 +1,38 @@
 #!/bin/sh
-unclutter -idle 0.1 -root &		
-matchbox-window-manager &		
-chromium-browser --kiosk --no-first-run \
-	--user-agent=touchui-chrome-touchscreen \
-	--remote-debugging-port=9222 --enable-logging \
-	--disable-java --disable-plugins --disable-extensions --disable-infobars \
-	--disk-cache-size=1048576 --start-maximized --window-position=0,0 --new-window \
-	/home/pi/TouchUI-autostart/load-screen/startup.html
+
+# Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
+# or to enable the remote deugger, forward port by haproxy or by tunnel
+TOUCHUI_DEBUG="--remote-debugging-port=9222 --enable-logging --v=100"
+
+# Remove restore last session after crash in Chrome
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' ~/.config/chromium/Default/Preferences
+
+# Force Chrome to render with touch events
+# Bugfix #46
+TOUCHUI_DEVICE=$(egrep -o "FT5406" /proc/bus/input/devices)
+if [ -z "$TOUCHUI_DEVICE" ]
+then
+	echo "TouchUI: touch events disabled"
+	TOUCHUI_ARGS=""
+	UA_DEVICE=$(egrep -o "Name=\"(.*)\"" /proc/bus/input/devices | sed -e 's/Name=//g' | sed -e 's/"//g')
+else
+	echo "TouchUI: touch events enabled"
+	TOUCHUI_ARGS="--touch-events=enabled"
+	UA_DEVICE="$TOUCHUI_DEVICE"
+fi
+
+# Load octoprint settings
+[ -r /etc/default/octoprint ] && . /etc/default/octoprint
+
+# Custom user-agent string
+CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
+
+matchbox-window-manager &
+unclutter -idle 0.1 -root &
+chromium-browser --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG \
+	--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576 \
+	--disable-java --disable-plugins --disable-extensions --disable-infobars  \
+	--user-agent="TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT) ($UA_DEVICE)" \
+	--start-maximized --window-position=0,0 \
+	$(dirname "$0")/load-screen/startup.html
