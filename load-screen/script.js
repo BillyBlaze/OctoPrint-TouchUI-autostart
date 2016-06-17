@@ -6,7 +6,7 @@
 	var error = document.getElementById("error");
 	var port = ((window.navigator.userAgent.match(/P:([0-9]+)/g) || [""])[0].replace("P:", "")) || 5000;
 	var prefix = "http://localhost:"+port+"/";
-	var url = prefix + "plugin/touchui/echo";
+	var url = prefix + "plugin/touchui/ping";
 	var pass = 0;
 	var retry = 0;
 	var checkTimeout;
@@ -100,7 +100,8 @@
 	}
 
 	function processRequest() {
-		//console.log("Pass: " + ++pass);
+		++pass;
+		//console.log("Pass: " + pass);
 
 		if(pass >= 30) {
 			setMsg("Connecting to TouchUI failed..", "", "error");
@@ -113,14 +114,14 @@
 		oReq.addEventListener('abort', doRequest);
 		oReq.open("get", url, true);
 		oReq.send();
-
-		if(pass > 0) {
-			progress.innerHTML = "<span id=\"badge\">" + pass + "</span> Connecting to TouchUI";
-		}
 	}
 
 	function doRequest() {
 		setTimeout(processRequest, 3000);
+		
+		if(pass > 0) {
+			progress.innerHTML = "<span id=\"badge\">" + pass + "</span> Connecting to TouchUI";
+		}
 	};
 
 	doRequest();

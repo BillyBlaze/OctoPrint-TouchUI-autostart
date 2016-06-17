@@ -50,12 +50,12 @@ body.hide #content {
 	color: #00B0FF;
 }
 #progress span {
-	padding: 2px 0;
+	padding: 3px 0;
 	width: 19px;
 	display: inline-block;
 	font-weight: bold;
 	font-family: monospace;
-	font-size: 12px;
+	font-size: 10px;
 	background-color: #00B0FF;
 	color: black;
 	text-align: center;
