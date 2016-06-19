@@ -1,0 +1,4 @@
+#!/bin/sh
+unclutter -idle 0.1 -root &
+matchbox-window-manager &
+kweb3 -RJPEAKYX http://localhost:5000
