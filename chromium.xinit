@@ -18,11 +18,9 @@ if [ -z "$TOUCHUI_DEVICE" ]
 then
 	echo "TouchUI: touch events automaticlly detected"
 	TOUCHUI_ARGS=""
-	UA_DEVICE=$(egrep -o "Name=\"(.*)\"" /proc/bus/input/devices | sed -e 's/Name=//g' | sed -e 's/"//g')
 else
 	echo "TouchUI: touch events enabled"
 	TOUCHUI_ARGS="--touch-events=enabled"
-	UA_DEVICE="$TOUCHUI_DEVICE"
 fi
 
 # Load octoprint settings
