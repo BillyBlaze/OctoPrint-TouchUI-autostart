@@ -36,6 +36,6 @@ unclutter -idle 0.1 -root &
 chromium-browser --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG \
 	--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576 \
 	--disable-java --disable-plugins --disable-extensions --disable-infobars  \
-	--user-agent="TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT) ($UA_DEVICE)" \
+	--user-agent="TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT)" \
 	--start-maximized --window-position=0,0 \
 	$(dirname "$0")/load-screen/startup.html
