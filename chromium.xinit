@@ -13,10 +13,10 @@ sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' ~/.config/chromium/Defaul
 
 # Force Chrome to render with touch events
 # Bugfix #46
-TOUCHUI_DEVICE=$(egrep -o "FT5406" /proc/bus/input/devices)
+TOUCHUI_DEVICE=$(egrep -o "ZH851|FT5406" /proc/bus/input/devices)
 if [ -z "$TOUCHUI_DEVICE" ]
 then
-	echo "TouchUI: touch events automaticlly detected"
+	echo "TouchUI: touch events automatically detected"
 	TOUCHUI_ARGS=""
 else
 	echo "TouchUI: touch events enabled"
