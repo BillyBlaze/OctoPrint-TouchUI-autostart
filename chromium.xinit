@@ -1,15 +1,19 @@
 #!/bin/sh
 
+# DEFAULT VARIABLES
+TOUCHUI_ARGS=""
+TOUCHUI_DEBUG=""
+
 # Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
 # or to enable the remote deugger, forward port by haproxy or by tunnel
 #TOUCHUI_DEBUG="--remote-debugging-port=9222 --enable-logging --v=100"
 
 # Remove restore last session after crash in Chrome
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' ~/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/pi/.config/chromium/Default/Preferences
 # And another one for not minified Preferences (Chrome legacy)
-sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' ~/.config/chromium/Default/Preferences
-sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' ~/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/pi/.config/chromium/Default/Preferences
+sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/pi/.config/chromium/Default/Preferences
 
 # Force Chrome to render with touch events
 # Bugfix #46
@@ -17,23 +21,26 @@ TOUCHUI_DEVICE=$(egrep -o "ZH851|FT5406" /proc/bus/input/devices)
 if [ -z "$TOUCHUI_DEVICE" ]
 then
 	echo "TouchUI: touch events automatically detected"
-	TOUCHUI_ARGS=""
 else
 	echo "TouchUI: touch events enabled"
-	TOUCHUI_ARGS="--touch-events=enabled"
+	TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
 fi
 
-# Load octoprint settings
+# Load octoprint settings for getting $PORT
 [ -r /etc/default/octoprint ] && . /etc/default/octoprint
 
-# Custom user-agent string
-CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
+# Load touchui settings for getting $TOUCHUI_USER
+[ -r /etc/default/touchui ] && . /etc/default/touchui
 
+CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
+CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
+                --dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
+                --disable-java --disable-plugins --disable-extensions --disable-infobars
+                --user-agent='TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT)'
+                --start-maximized --window-position=0,0
+                $(dirname "$0")/load-screen/startup.html"
+
+# Start window manager, unclutter to remove cursor and start chromium as specific user				
 matchbox-window-manager &
-unclutter -idle 0.1 -root &
-chromium-browser --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG \
-	--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576 \
-	--disable-java --disable-plugins --disable-extensions --disable-infobars  \
-	--user-agent="TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT)" \
-	--start-maximized --window-position=0,0 \
-	$(dirname "$0")/load-screen/startup.html
+unclutter -idle 0.1 &
+su $TOUCHUI_USER -c "chromium-browser $(echo $CHROME_ARGS|tr -d '\n')"

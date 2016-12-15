@@ -2,14 +2,14 @@
 
 ### BEGIN INIT INFO
 # Provides:           touchui
-# Required-Start:     $all octoprint
+# Required-Start:     $all xserver
 # Required-Stop:
 # Should-Start:
 # Should-Stop:
 # Default-Start:      2 3 4 5
 # Default-Stop:       0 1 6
 # Short-Description:  TouchUI daemon
-# Description:        Starts the TouchUI daemon with the user specified.
+# Description:        Start TouchUI with xinit.
 ### END INIT INFO
 
 # Author: Sami Olmari
@@ -23,6 +23,10 @@ NAME="TouchUI"
 PIDFILE=/var/run/$NAME.pid
 PKGNAME=touchui
 SCRIPTNAME=/etc/init.d/$PKGNAME
+
+# XORG needs to run as root to function
+# Bugfix #76
+ROOT_USER=root
 
 # Read configuration variable file if it is present
 [ -r /etc/default/$PKGNAME ] && . /etc/default/$PKGNAME
@@ -93,7 +97,7 @@ do_start()
 
    if [ $RETVAL != 0 ]; then
        start-stop-daemon --start --background --quiet --pidfile $PIDFILE --make-pidfile \
-       --exec $DAEMON --chuid $TOUCHUI_USER --user $TOUCHUI_USER --umask $UMASK --nicelevel=$NICELEVEL \
+       --exec $DAEMON --chuid $ROOT_USER --user $ROOT_USER --umask $UMASK --nicelevel=$NICELEVEL \
        -- $DAEMON_ARGS
        RETVAL="$?"
    fi
@@ -110,7 +114,7 @@ do_stop()
    #   2 if daemon could not be stopped
    #   other if a failure occurred
 
-   start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --user $TOUCHUI_USER --pidfile $PIDFILE
+   start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --user $ROOT_USER --pidfile $PIDFILE
    RETVAL="$?"
    [ "$RETVAL" = "2" ] && return 2
 
