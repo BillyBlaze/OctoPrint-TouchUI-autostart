@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides:           touchui
-# Required-Start:     $all xserver
+# Required-Start:
 # Required-Stop:
 # Should-Start:
 # Should-Stop:
