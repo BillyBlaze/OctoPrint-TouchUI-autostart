@@ -17,7 +17,7 @@ sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/pi/.config/chromium
 
 # Force Chrome to render with touch events
 # Bugfix #46
-TOUCHUI_DEVICE=$(egrep -o "ZH851|FT5406" /proc/bus/input/devices)
+TOUCHUI_DEVICE=$(xinput --list --long | grep XITouchClass)
 if [ -z "$TOUCHUI_DEVICE" ]
 then
 	echo "TouchUI: touch events automatically detected"
