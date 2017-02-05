@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -f "/usr/bin/xinput_calibrator" ]
+then
+	xinput_calibrator
+else
+	echo "\n\nERROR!\nNot starting xinput_calibrator; /usr/bin/xinput_calibrator not found. Please install xinput_calibrator first.\n\n"
+	exit 0
+fi
+
