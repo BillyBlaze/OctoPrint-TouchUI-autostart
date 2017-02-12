@@ -8,12 +8,18 @@ TOUCHUI_DEBUG=""
 # or to enable the remote deugger, forward port by haproxy or by tunnel
 #TOUCHUI_DEBUG="--remote-debugging-port=9222 --enable-logging --v=100"
 
+# Load octoprint settings for getting $PORT
+[ -r /etc/default/octoprint ] && . /etc/default/octoprint
+
+# Load touchui settings for getting $TOUCHUI_USER
+[ -r /etc/default/touchui ] && . /etc/default/touchui
+
 # Remove restore last session after crash in Chrome
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/pi/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
 # And another one for not minified Preferences (Chrome legacy)
-sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/pi/.config/chromium/Default/Preferences
-sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/pi/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
+sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
 
 # Force Chrome to render with touch events
 # Bugfix #46
@@ -26,12 +32,6 @@ else
 	TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
 fi
 
-# Load octoprint settings for getting $PORT
-[ -r /etc/default/octoprint ] && . /etc/default/octoprint
-
-# Load touchui settings for getting $TOUCHUI_USER
-[ -r /etc/default/touchui ] && . /etc/default/touchui
-
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
 CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
                 --dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
@@ -39,6 +39,8 @@ CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
                 --user-agent='TouchUI (X11, Chrome $CHROME_VERSION) (P:$PORT)'
                 --start-maximized --window-position=0,0
                 $(dirname "$0")/load-screen/startup.html"
+
+[ -r /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh ] && . /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh
 
 # Start window manager, unclutter to remove cursor and start chromium as specific user				
 matchbox-window-manager &
