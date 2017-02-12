@@ -26,7 +26,15 @@ sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/$TOUCHUI_USER/.conf
 TOUCHUI_DEVICE=$(xinput --list --long | grep XITouchClass)
 if [ -z "$TOUCHUI_DEVICE" ]
 then
-	echo "TouchUI: touch events automatically detected"
+	$CHECK=$(egrep -o "stmpe-ts" /proc/bus/input/devices)		
+	if [-z "$CHECK" ]
+	then
+		echo "TouchUI: touch events automatically detected"
+		#echo "TouchUI: no stmpe-ts device"
+	else
+		echo "TouchUI: touch events enabled"
+		TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
+	fi
 else
 	echo "TouchUI: touch events enabled"
 	TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
