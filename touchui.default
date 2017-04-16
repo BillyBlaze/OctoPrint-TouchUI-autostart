@@ -24,3 +24,6 @@ NICELEVEL=-2
 
 # Should we run at startup?
 START=yes
+
+# Should Chromium start with touch events? (false or true)
+FORCE_TOUCH=false

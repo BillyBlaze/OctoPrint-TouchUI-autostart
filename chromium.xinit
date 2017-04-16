@@ -11,7 +11,7 @@ TOUCHUI_DEBUG=""
 # Load octoprint settings for getting $PORT
 [ -r /etc/default/octoprint ] && . /etc/default/octoprint
 
-# Load touchui settings for getting $TOUCHUI_USER
+# Load touchui settings for getting $TOUCHUI_USER and $FORCE_TOUCH
 [ -r /etc/default/touchui ] && . /etc/default/touchui
 
 # Remove restore last session after crash in Chrome
@@ -21,23 +21,23 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/$TOUCHUI_USER/.config
 sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
 sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
 
-# Force Chrome to render with touch events
-# Bugfix #46
-TOUCHUI_DEVICE=$(xinput --list --long | grep XITouchClass)
-if [ -z "$TOUCHUI_DEVICE" ]
+# Check if $FORCE_TOUCH is set to true
+# This variable is set inside /etc/default/touchui
+if [ "$FORCE_TOUCH" = true ]
 then
-	$CHECK=$(egrep -o "stmpe-ts" /proc/bus/input/devices)		
-	if [-z "$CHECK" ]
+	echo "TouchUI: touch events enabled (forced)"
+	TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
+else
+	# Force Chrome to render with touch events
+	# Bugfix #46
+	TOUCHUI_DEVICE=$(xinput --list --long | grep XITouchClass)
+	if [ -z "$TOUCHUI_DEVICE" ]
 	then
 		echo "TouchUI: touch events automatically detected"
-		#echo "TouchUI: no stmpe-ts device"
 	else
 		echo "TouchUI: touch events enabled"
 		TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
 	fi
-else
-	echo "TouchUI: touch events enabled"
-	TOUCHUI_ARGS="$TOUCHUI_ARGS --touch-events=enabled"
 fi
 
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
