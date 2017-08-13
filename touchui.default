@@ -27,3 +27,6 @@ START=yes
 
 # Should Chromium start with touch events? (false or true)
 FORCE_TOUCH=false
+
+# Enable or disable the screensaver
+DISABLE_SCREENSAVER=false

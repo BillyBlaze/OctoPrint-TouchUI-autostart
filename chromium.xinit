@@ -3,6 +3,7 @@
 # DEFAULT VARIABLES
 TOUCHUI_ARGS=""
 TOUCHUI_DEBUG=""
+TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 
 # Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
 # or to enable the remote deugger, forward port by haproxy or by tunnel
@@ -40,6 +41,13 @@ else
 	fi
 fi
 
+# Check if we need to disable the screensaver
+if [ "$DISABLE_SCREENSAVER" = true ]
+then
+	echo "TouchUI: screensaver disabled"
+	TOUCHUI_EXTRA="xset s off & xset -dpms & xset s noblank"
+fi
+
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
 CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
                 --dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
@@ -50,7 +58,8 @@ CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
 
 [ -r /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh ] && . /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh
 
-# Start window manager, unclutter to remove cursor and start chromium as specific user				
+# Start window manager, unclutter to remove cursor and start chromium as specific user
+eval $TOUCHUI_EXTRA &
 matchbox-window-manager &
 unclutter -idle 0.1 &
 su $TOUCHUI_USER -c "chromium-browser $(echo $CHROME_ARGS|tr -d '\n')"
