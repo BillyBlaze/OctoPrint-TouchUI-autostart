@@ -11,7 +11,7 @@
 	var retry = 0;
 	var checkTimeout;
 	
-	var version = 1;
+	var version = 2;
 	
 	var setMsg = function(title, subtitle, className) {
 		progress.innerHTML = title;
@@ -53,24 +53,32 @@
 		hasPostMessage = true;
 
 		switch(event.data) {
+			case 'reset':
+				setMsg("Loading OctoPrint", "", "");
+				break;
+
 			case 'loading':
 				setMsg("Loading TouchUI", "", "");
 				
-				checkTimeout = setTimeout(function() {
-					setMsg("Startup failed..", "Tap to retry", "error");
-				}, 60000); // Wait 1 minutes, if failed give error
+				if (!checkTimeout) {
+					checkTimeout = setTimeout(function() {
+						setMsg("Startup failed..", "Tap to retry", "error");
+					}, 60000); // Wait 1 minutes, if failed give error
+				}
 				break;
 				
 			default:
+				clearTimeout(checkTimeout);
+				checkTimeout = false;
+
 				// version check by number
 				if(!isNaN(event.data)) {
 					if (parseFloat(event.data) > version) {
-						setMsg("Update your bootloader!", "Read the wiki &amp; Tap to proceed", "info");
+						setMsg("Update your bootloader!", "Read the wiki how, tap to proceed", "info");
 						return;
 						
 					//TouchUI is ready and has same version
 					} else { 
-						clearTimeout(checkTimeout);
 						setMsg("", "", "hide");
 						return;
 					}
@@ -81,10 +89,8 @@
 					var file = event.data[1];
 					
 					if(msg !== true) { // if true this is not an error
-						clearTimeout(checkTimeout);
 						setMsg("Startup failed, tap to retry", ((retry > 0) ? msg : ""), "error");
 					} else { // if true this is a customization
-
 						localStorage["mainColor"] = event.data[1];
 						localStorage["bgColor"] = event.data[2];
 
@@ -124,5 +130,5 @@
 		}
 	};
 
-	doRequest();
+	processRequest();
 }();
