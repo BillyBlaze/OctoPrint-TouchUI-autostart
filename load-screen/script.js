@@ -130,5 +130,5 @@
 		}
 	};
 
-	processRequest();
+	doRequest();
 }();
