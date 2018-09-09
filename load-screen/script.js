@@ -85,11 +85,8 @@
 				}
 				
 				if (typeof event.data === "object") {
-					var msg = event.data[0];
-					var file = event.data[1];
-					
-					if(msg !== true) { // if true this is not an error
-						setMsg("Startup failed, tap to retry", ((retry > 0) ? msg : ""), "error");
+					if(event.data[0] !== true) { // if true this is not an error
+						setMsg("Startup failed, tap to retry", event.data[0].replace(/(?:\r\n|\r|\n)/g, '<br>'), "error");
 					} else { // if true this is a customization
 						localStorage["mainColor"] = event.data[1];
 						localStorage["bgColor"] = event.data[2];
