@@ -28,7 +28,13 @@ octopi=""
 if [ -f "$octopi_file" ]
 then
 	echo "TouchUI: OctoPi detected"
-	octopi="OctoPi"
+
+	if [ -n "nc -vz 127.0.0.1 80" ]; then
+		echo "TouchUI: Port 80 is open"
+		octopi=" OctoPi"
+	else
+		echo "TouchUI: Port 80 is closed"
+	fi
 fi
 
 # Check if $FORCE_TOUCH is set to true
@@ -61,7 +67,7 @@ CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version
 CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
                 --dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
                 --disable-java --disable-plugins --disable-extensions --disable-infobars
-                --user-agent='TouchUI (X11, Chrome $CHROME_VERSION $octopi) (P:$PORT)'
+                --user-agent='TouchUI (X11, Chrome $CHROME_VERSION$octopi) (P:$PORT)'
                 --start-maximized --window-position=0,0
                 $(dirname "$0")/load-screen/startup.html"
 
