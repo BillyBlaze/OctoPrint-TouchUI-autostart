@@ -18,6 +18,8 @@
 		error.innerHTML = subtitle;
 		document.body.className = className;
 	}
+
+	document.getElementById("info").innerHTML = "Connecting to " + prefix;
 	
 	if (localStorage["mainColor"] && localStorage["bgColor"]) {
 		document.getElementById("styling").innerHTML = "" +
@@ -25,7 +27,9 @@
 			"#progress { color: " + localStorage["mainColor"] + "; }" +
 			"#error { color: " + localStorage["mainColor"] + "; }" +
 			"body { background: " + localStorage["bgColor"] + "; }" +
-			"#progress span { background: " + localStorage["mainColor"] + "; color: " + localStorage["bgColor"] + "; }";
+			"#progress span { background: " + localStorage["mainColor"] + "; color: " + localStorage["bgColor"] + "; " +
+			"#info { color: " + localStorage["mainColor"] + "; }" +
+		"}";
 	}
 
 	content.onload = function() {
@@ -85,7 +89,8 @@
 				}
 				
 				if (typeof event.data === "object") {
-					if(event.data[0] !== true) { // if true this is not an error
+					// if not true this is a error
+					if(event.data[0] !== true) {
 						setMsg("Startup failed, tap to retry", event.data[0].replace(/(?:\r\n|\r|\n)/g, '<br>'), "error");
 					} else { // if true this is a customization
 						localStorage["mainColor"] = event.data[1];
