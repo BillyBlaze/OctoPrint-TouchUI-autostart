@@ -75,9 +75,12 @@ CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
                 --disable-java --disable-plugins --disable-extensions --disable-infobars
                 --user-agent='TouchUI (X11, Chrome $CHROME_VERSION$octopi) (P:$PORT)'
                 --start-maximized --window-position=0,0
-                $(dirname "$0")/load-screen/startup.html"
+                http://localhost:8000/startup.html"
 
 [ -r /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh ] && . /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh
+
+# Start local web server to host the startup page to avoid CORS problems using local files
+python /home/$TOUCHUI_USER/TouchUI-autostart/server.py --dir /home/$TOUCHUI_USER/TouchUI-autostart/load-screen --port 8000 &
 
 # Start window manager, unclutter to remove cursor and start chromium as specific user
 eval $TOUCHUI_EXTRA &
