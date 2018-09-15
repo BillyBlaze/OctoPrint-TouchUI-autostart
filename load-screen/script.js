@@ -5,8 +5,11 @@
 	var progress = document.getElementById("progress");
 	var error = document.getElementById("error");
 	var port = ((window.navigator.userAgent.match(/P:([0-9]+)/g) || [""])[0].replace("P:", "")) || 5000;
-	var prefix = (window.navigator.userAgent.indexOf("OctoPi") !== -1 || port == "80") ? "http://localhost/" : "http://localhost:"+port+"/";
-	var url = prefix + "plugin/touchui/ping";
+
+	var url = (window.navigator.userAgent.indexOf("IPv6") !== -1) ? "http://[::1]" : "http://localhost";
+	var prefix = (port == "80") ? url + "/" : url + ":"+port+"/";
+
+	var pingUrl = prefix + "plugin/touchui/ping";
 	var pass = 0;
 	var retry = 0;
 	var checkTimeout;
@@ -89,7 +92,7 @@
 				}
 				
 				if (typeof event.data === "object") {
-					// if not true this is a error
+					// if not true this is an error
 					if(event.data[0] !== true) {
 						setMsg("Startup failed, tap to retry", event.data[0].replace(/(?:\r\n|\r|\n)/g, '<br>'), "error");
 					} else { // if true this is a customization
@@ -120,7 +123,7 @@
 		oReq.addEventListener('load', reqListener);
 		oReq.addEventListener('error', doRequest);
 		oReq.addEventListener('abort', doRequest);
-		oReq.open("get", url, true);
+		oReq.open("get", pingUrl, true);
 		oReq.send();
 	}
 

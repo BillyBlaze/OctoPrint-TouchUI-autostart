@@ -28,12 +28,18 @@ octopi=""
 if [ -f "$octopi_file" ]
 then
 	echo "TouchUI: OctoPi detected"
+	ns=$(netstat -tlnp | grep 80)
 
-	if [ -n "nc -vz 127.0.0.1 80" ]; then
-		echo "TouchUI: Port 80 is open"
-		octopi=" OctoPi"
-	else
-		echo "TouchUI: Port 80 is closed"
+	if [ -n "$(echo $ns | grep 'tcp ')" ]; then
+		octopi=" IPv4"
+		PORT="80"
+		echo "TouchUI: haproxy has a listening IPv4 socket."
+	fi
+
+	if [ -n "$(echo $ns | grep 'tcp6 ')" ]; then
+		octopi=" IPv6"
+		PORT="80"
+		echo "TouchUI: haproxy has a listening IPv6 socket."
 	fi
 fi
 
