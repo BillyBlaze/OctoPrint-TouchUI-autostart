@@ -12,6 +12,9 @@ TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 # Load octoprint settings for getting $PORT
 [ -r /etc/default/octoprint ] && . /etc/default/octoprint
 
+# Load touchui default settings (overwritten by default file next)
+[ -r ./touchui.default ] && . ./touchui.default
+
 # Load touchui settings for getting $TOUCHUI_USER and $FORCE_TOUCH
 [ -r /etc/default/touchui ] && . /etc/default/touchui
 
@@ -70,17 +73,17 @@ then
 fi
 
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
-CHROME_ARGS="   --no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
-                --dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
-                --disable-java --disable-plugins --disable-extensions --disable-infobars
-                --user-agent='TouchUI (X11, Chrome $CHROME_VERSION$octopi) (P:$PORT)'
-                --start-maximized --window-position=0,0
-                http://localhost:8000/startup.html"
+CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
+				--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
+				--disable-java --disable-plugins --disable-extensions --disable-infobars
+				--user-agent='TouchUI (X11, Chrome $CHROME_VERSION$octopi) (P:$PORT)'
+				--start-maximized --window-position=0,0 
+				http://localhost:$TOUCHUI_PORT/startup.html"
 
 [ -r /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh ] && . /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh
 
 # Start local web server to host the startup page to avoid CORS problems using local files
-python /home/$TOUCHUI_USER/TouchUI-autostart/server.py --dir /home/$TOUCHUI_USER/TouchUI-autostart/load-screen --port 8000 &
+python /home/$TOUCHUI_USER/TouchUI-autostart/server.py --dir /home/$TOUCHUI_USER/TouchUI-autostart/load-screen/ --port $TOUCHUI_PORT &
 
 # Start window manager, unclutter to remove cursor and start chromium as specific user
 eval $TOUCHUI_EXTRA &
