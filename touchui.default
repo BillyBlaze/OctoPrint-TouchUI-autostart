@@ -33,3 +33,6 @@ FORCE_TOUCH=false
 
 # Enable or disable the screensaver
 DISABLE_SCREENSAVER=false
+
+# Autodetect OctoPi port number
+AUTODETECT_PORT=true

@@ -5,6 +5,7 @@ TOUCHUI_ARGS=""
 TOUCHUI_DEBUG=""
 TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 TOUCHUI_PORT="8888"
+AUTODETECT_PORT=true
 
 # Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
 # or to enable the remote deugger, forward port by haproxy or by tunnel
@@ -24,23 +25,26 @@ sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/$TOUCHUI_USER/.
 sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
 
 # Check if OctoPi is used
-octopi_file="/etc/octopi_version"
-octopi=""
-if [ -f "$octopi_file" ]
+OCTOPI_FILE="/etc/octopi_version"
+OCTOPI=""
+if [ "$AUTODETECT_PORT" = true ]
 then
-	echo "TouchUI: OctoPi detected"
-	ns=$(netstat -tlnp | grep 80)
+	if [ -f "$OCTOPI_FILE" ]
+	then
+		echo "TouchUI: OctoPi detected"
+		ns=$(netstat -tlnp | grep ':80 ')
 
-	if [ -n "$(echo $ns | grep 'tcp ')" ]; then
-		octopi=" IPv4"
-		PORT="80"
-		echo "TouchUI: haproxy has a listening IPv4 socket."
-	fi
+		if [ -n "$(echo $ns | grep 'tcp ')" ]; then
+			OCTOPI=" IPv4"
+			PORT="80"
+			echo "TouchUI: haproxy has a listening IPv4 socket."
+		fi
 
-	if [ -n "$(echo $ns | grep 'tcp6 ')" ]; then
-		octopi=" IPv6"
-		PORT="80"
-		echo "TouchUI: haproxy has a listening IPv6 socket."
+		if [ -n "$(echo $ns | grep 'tcp6 ')" ]; then
+			OCTOPI=" IPv6"
+			PORT="80"
+			echo "TouchUI: haproxy has a listening IPv6 socket."
+		fi
 	fi
 fi
 
@@ -74,7 +78,7 @@ CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version
 CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
 				--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
 				--disable-java --disable-plugins --disable-extensions --disable-infobars
-				--user-agent='TouchUI (X11, Chrome $CHROME_VERSION$octopi) (P:$PORT)'
+				--user-agent='TouchUI (X11, Chrome $CHROME_VERSION$OCTOPI) (P:$PORT)'
 				--start-maximized --window-position=0,0 
 				http://localhost:$TOUCHUI_PORT/startup.html"
 
