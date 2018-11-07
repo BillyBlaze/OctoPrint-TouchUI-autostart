@@ -12,6 +12,12 @@ TOUCHUI_FILE="chromium.xinit"
 # TouchUI server port
 TOUCHUI_PORT="8888"
 
+# Command to hide cursor and window-manager before launching chromium
+#TOUCHUI_EXECUTE=""
+
+# Change chromium bin location
+CHROME_BIN="chromium-browser"
+
 # Path to the xinit executable, use this to override the default setting "/usr/bin/xinit"
 #DAEMON=/path/to/xinit/executable
 

@@ -5,6 +5,8 @@ TOUCHUI_ARGS=""
 TOUCHUI_DEBUG=""
 TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 TOUCHUI_PORT="8888"
+TOUCHUI_EXECUTE="matchbox-window-manager & unclutter -idle 0.1 &"
+CHROME_BIN="chromium-browser"
 AUTODETECT_PORT=true
 
 # Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
@@ -89,6 +91,5 @@ python /home/$TOUCHUI_USER/TouchUI-autostart/server.py --dir /home/$TOUCHUI_USER
 
 # Start window manager, unclutter to remove cursor and start chromium as specific user
 eval $TOUCHUI_EXTRA &
-matchbox-window-manager &
-unclutter -idle 0.1 &
-su $TOUCHUI_USER -c "chromium-browser $(echo $CHROME_ARGS|tr -d '\n')"
+eval $TOUCHUI_EXECUTE &
+su $TOUCHUI_USER -c "$CHROME_BIN $(echo $CHROME_ARGS|tr -d '\n')"
