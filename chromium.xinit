@@ -76,6 +76,7 @@ then
 	TOUCHUI_EXTRA="xset s off & xset -dpms & xset s noblank"
 fi
 
+TOUCHUI_DIR="/home/$TOUCHUI_USER/$TOUCHUI_DIR"
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
 CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
 				--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
@@ -84,10 +85,12 @@ CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
 				--start-maximized --window-position=0,0 
 				http://localhost:$TOUCHUI_PORT/startup.html"
 
-[ -r /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh ] && . /home/$TOUCHUI_USER/TouchUI-autostart/calibration.sh
+[ -r $TOUCHUI_DIR/calibration.sh ] && . $TOUCHUI_DIR/calibration.sh
 
 # Start local web server to host the startup page to avoid CORS problems using local files
-python /home/$TOUCHUI_USER/TouchUI-autostart/server.py --dir /home/$TOUCHUI_USER/TouchUI-autostart/load-screen/ --port $TOUCHUI_PORT &
+python $TOUCHUI_DIR/helpers/server.py \
+	--dir $TOUCHUI_DIR/load-screen/ \
+	--port $TOUCHUI_PORT &
 
 # Start window manager, unclutter to remove cursor and start chromium as specific user
 eval $TOUCHUI_EXTRA &
