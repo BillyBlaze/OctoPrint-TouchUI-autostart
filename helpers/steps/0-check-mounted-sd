@@ -1,0 +1,9 @@
+#!/bin/bash
+# Check if file system is expanded.
+if [ -z "$(mount | grep mmcblk0p2)" ]
+then
+	echo ""
+	echo -e "\e[31mExpand your file system before running this helper."
+	echo -e "Run 'sudo raspi-config'\e[0m"
+	exit 1
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+. $DIR/functions
+
+if [ -e /etc/init.d/lightdm ]
+then
+	echo ""
+	echo "Boot to command line:"
+	update-rc.d lightdm disable 2
+	successfull $?
+
+	if [ -e /etc/profile.d/boottoscratch.sh ]
+	then
+		rm -f /etc/profile.d/boottoscratch.sh
+		sed -i /etc/inittab \
+			-e "s/^#\(.*\)#\s*BTS_TO_ENABLE\s*/\1/" \
+			-e "/#\s*BTS_TO_DISABLE/d"
+		telinit q
+	fi
+fi

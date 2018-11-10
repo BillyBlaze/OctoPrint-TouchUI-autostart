@@ -1,0 +1,58 @@
+#!/bin/bash
+DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+BROWSER=""
+
+# Get CLI override (e.g. -browser my-browser)
+. $DIR/getopts
+
+# If browser is null, set default
+[ "$BROWSER" == "" ] && BROWSER="chromium-browser"
+
+# Enforce this helper to be run as root
+if [ $(id -u) -ne 0 ]
+then 
+	echo -e ""
+	echo -e " \e[31mRun this with \e[1msudo\e[0m\e[31m or as an \e[1muser root\e[0m\e[31m" 2>&1
+	echo -e " Since we need to install and configure packages" 2>&1
+	echo -e " sudo IS needed here!\e[0m" 2>&1
+	echo -e ""
+	exit 1
+fi
+
+# Show introduction
+echo -e "\e[40m\e[36m ╔╦╗╔═╗╦ ╦╔═╗╦ ╦╦ ╦╦ \e[0m"
+echo -e "\e[40m\e[36m  ║ ║ ║║ ║║  ╠═╣║ ║║ \e[0m"
+echo -e "\e[40m\e[36m  ╩ ╚═╝╚═╝╚═╝╩ ╩╚═╝╩ \e[0m"
+echo -e "\e[40m\e[36mInstall helper v0.0.1\e[0m"
+
+# Stop TouchUI if it's active
+service touchui stop >/dev/null 2>&1
+
+# Execute steps
+. $DIR/steps/0-check-mounted-sd
+. $DIR/steps/1-boot-to-command
+. $DIR/steps/2-apt-get-install
+. $DIR/steps/3-jessie-xorg-setup
+. $DIR/steps/4-setup-startup
+. $DIR/steps/5-setup-autologin-as
+
+# Legacy
+# Try to set Xwrapper.config
+sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config >/dev/null 2>&1
+
+# Launch TouchUI
+echo ""
+echo "Launching TouchUI:"
+service touchui start
+successfull $?
+
+# Show success message
+echo ""
+echo "TouchUI is successfully installed, Do not remove the directory"
+echo "'~/TouchUI-autostart' and if you change the path of this directory"
+echo "then edit the file '/etc/default/touchui' with the new path."
+
+# Finally check if chromium-browser is able to run with the kernel
+. $DIR/steps/6-check-chromium
+
+exit 0

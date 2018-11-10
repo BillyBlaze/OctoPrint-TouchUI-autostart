@@ -1,0 +1,29 @@
+#!/bin/bash
+. $DIR/functions
+DEPENDENCIES=""
+
+[ $(check_package xinit) == 0 ] && DEPENDENCIES="$DEPENDENCIES xinit"
+[ $(check_package xinput) == 0 ] && DEPENDENCIES="$DEPENDENCIES xinput"
+[ $(check_package xserver-xorg) == 0 ] && DEPENDENCIES="$DEPENDENCIES xserver-xorg"
+[ $(check_package xserver-xorg-video-fbdev) == 0 ] && DEPENDENCIES="$DEPENDENCIES xserver-xorg-video-fbdev"
+[ $(check_package x11-xserver-utils) == 0 ] && DEPENDENCIES="$DEPENDENCIES x11-xserver-utils"
+[ $(check_package matchbox) == 0 ] && DEPENDENCIES="$DEPENDENCIES matchbox"
+[ $(check_package unclutter) == 0 ] && DEPENDENCIES="$DEPENDENCIES unclutter"
+[ $(check_package $BROWSER) == 0 ] && DEPENDENCIES="$DEPENDENCIES $BROWSER"
+
+echo ""
+if [ -n "$DEPENDENCIES" ]
+then
+	echo "Running apt-get update (this will take a while)"
+	echo "Do NOT switch off the Pi or close this console until done!"
+	apt-get update >/dev/null 2>&1
+	successfull $?
+
+	echo ""
+	echo "Installing dependencies:"
+	apt-get install $DEPENDENCIES
+	successfull $?
+else
+	echo "Skipping installation of dependencies:"
+	echo " - All dependencies are already installed"
+fi

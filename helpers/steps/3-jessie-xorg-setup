@@ -1,0 +1,28 @@
+#!/bin/bash
+. $DIR/functions
+XORG_DIR="/usr/share/X11/xorg.conf.d"
+FB=$(ls /dev | grep fb)
+
+HASCONFIG=false
+for file in $XORG_DIR/*
+do
+	if [ -n "$(cat $file | grep /dev/$FB)" ]
+	then
+		HASCONFIG=true
+	fi
+done
+
+echo ""
+if [ $HASCONFIG = false ]
+then
+	echo "Creating Xorg config file:"
+	echo 'Section "Device"'						>> $XORG_DIR/99-fbdev.conf
+	echo '  Identifier "touchscreen"'			>> $XORG_DIR/99-fbdev.conf
+	echo '  Driver "fbdev"'						>> $XORG_DIR/99-fbdev.conf
+	echo "  Option \"fbdev\" \"/dev/$FB\""		>> $XORG_DIR/99-fbdev.conf
+	echo 'EndSection'							>> $XORG_DIR/99-fbdev.conf
+	successfull $?
+else
+	echo "Skipping creation of Xorg config file:"
+	echo " - /dev/$FB already configured"
+fi

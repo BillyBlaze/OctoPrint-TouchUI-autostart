@@ -1,6 +1,5 @@
 !function() {
-	
-	var hasPostMessage = false;
+
 	var content = document.getElementById("content");
 	var progress = document.getElementById("progress");
 	var error = document.getElementById("error");
@@ -37,9 +36,7 @@
 
 	content.onload = function() {
 		setTimeout(function() {
-			if (!hasPostMessage) {
-				setMsg("OctoPrint loaded without TouchUI", "Tap to retry", "error");
-			}
+			setMsg("", "", "hide");
 		}, 100);
 	}
 
@@ -57,8 +54,6 @@
 	}, false);
 
 	window.addEventListener("message", function(event) {
-		hasPostMessage = true;
-
 		switch(event.data) {
 			case 'reset':
 				setMsg("Loading OctoPrint", "", "");

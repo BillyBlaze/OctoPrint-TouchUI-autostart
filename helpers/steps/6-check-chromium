@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$BROWSER" == "chromium-browser" ]
+then
+	if [ -n "$(chromium-browser 2>&1 | grep 'undefined symbol: mmal_vc_init_fd')" ]
+	then
+		echo ""
+		echo -e "\e[31mWARNING!";
+		echo -e "chromium-browser is currently unable to run on your device"
+		echo -e "in order to launch TouchUI, you need to upgrade your kernel"
+		echo -e "to the latest version."
+		echo ""
+		echo -e "More info:"
+		echo -e "https://github.com/BillyBlaze/OctoPrint-TouchUI/wiki/Setup:-Troubleshooting#upgrading-your-kernel\e[0m"
+		echo ""
+	fi
+fi

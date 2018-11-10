@@ -1,0 +1,18 @@
+#!/bin/bash
+. $DIR/functions
+
+echo ""
+echo "Move touchui.init to '/etc/init.d/touchui':"
+cp $DIR/../touchui.init /etc/init.d/touchui
+successfull $?
+chmod +x /etc/init.d/touchui
+
+echo ""
+echo "Move touchui.default to '/etc/default/touchui':"
+cp $DIR/../touchui.default /etc/default/touchui
+successfull $?
+
+echo ""
+echo "Register touchui:"
+update-rc.d touchui defaults
+successfull $?
