@@ -13,6 +13,15 @@ This package contains:
  1. Deamon script
  1. xinit script
  1. Splash screen 
+ 1. Install helper
+
+## Installation helper
+
+Running install helper:
+`sudo ~/TouchUI-autostart/helpers/install`
+
+More information:
+`sudo ~/TouchUI-autostart/helpers/install --help`
  
 ## Reporting issue's
  
