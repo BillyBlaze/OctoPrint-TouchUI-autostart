@@ -1,4 +1,5 @@
 #!/bin/bash
+. $DIR/functions
 
 if [ "$BROWSER" == "chromium-browser" ]
 then
@@ -13,5 +14,6 @@ then
 		echo -e "$(color 'red' 'More info:')"
 		echo -e "$(color 'red' 'https://github.com/BillyBlaze/OctoPrint-TouchUI/wiki/Setup:-Troubleshooting#upgrading-your-kernel')"
 		echo ""
+		do_exit
 	fi
 fi

@@ -45,12 +45,6 @@ service touchui stop >/dev/null 2>&1
 # Try to set Xwrapper.config
 sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config >/dev/null 2>&1
 
-# Launch TouchUI
-echo ""
-echo "Launching TouchUI:"
-service touchui start
-successfull $?
-
 # Show success message
 echo ""
 echo "TouchUI is successfully installed, Do not remove the directory"
@@ -59,5 +53,11 @@ echo "then edit the file '/etc/default/touchui' with the new path."
 
 # Finally check if chromium-browser is able to run with the kernel
 . $DIR/steps/7-check-chromium
+
+# Launch TouchUI
+echo ""
+echo "Launching TouchUI:"
+service touchui start
+successfull $?
 
 exit 0
