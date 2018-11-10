@@ -17,10 +17,10 @@ This package contains:
 
 ## Installation helper
 
-Running install helper:
+Running install helper:  
 `sudo ~/TouchUI-autostart/helpers/install`
 
-More information:
+More information:  
 `sudo ~/TouchUI-autostart/helpers/install --help`
  
 ## Reporting issue's
