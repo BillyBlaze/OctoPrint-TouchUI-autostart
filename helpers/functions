@@ -1,12 +1,36 @@
 #!/bin/bash
 
+color() {
+	if [ "$1" == "red" ]
+	then
+		echo -e "\e[31m$2\e[0m"
+	fi
+
+	if [ "$1" == "green" ]
+	then
+		echo -e "\e[92m$2\e[0m"
+	fi
+
+	if [ "$1" == "touchui" ]
+	then
+		echo -e "\e[40m\e[36m$2\e[0m"
+	fi
+}
+
+do_exit() {
+	if [ "$FORCE" == false ]
+	then
+		exit 1
+	fi
+}
+
 successfull () {
 	if [ $1 -eq 0 ]
 	then
-		echo -e " - \e[92msuccess\e[0m"
+		echo -e " - $(color 'green' 'success')"
 	else
-		echo -e " - \e[31mfailed\e[0m"
-		exit 1
+		echo -e " - $(color 'red' 'failed')"
+		do_exit
 	fi
 }
 

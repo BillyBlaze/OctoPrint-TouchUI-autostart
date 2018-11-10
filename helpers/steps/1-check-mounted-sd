@@ -1,0 +1,11 @@
+#!/bin/bash
+. $DIR/functions
+
+# Check if file system is expanded.
+if [ -z "$(mount | grep mmcblk0p2)" ]
+then
+	echo ""
+	echo -e "$(color 'red' 'Expand your file system before running this helper.')"
+	echo -e "$(color 'red' 'Run `sudo raspi-config`')"
+	do_exit
+fi

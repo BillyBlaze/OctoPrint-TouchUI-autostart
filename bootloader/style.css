@@ -91,7 +91,8 @@ body.hide #content {
 }
 
 .error #progress,
-.error #error {
+.error #error,
+.error #info {
 	color: #ff0000;
 }
 

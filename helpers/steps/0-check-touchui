@@ -1,0 +1,10 @@
+#!/bin/bash
+. $DIR/functions
+
+if [ -z $(find /home/ -type f -name 'touchui.bundled.js*') ]
+then
+	echo ""
+	echo -e "$(color 'red' 'TouchUI was not found!')"
+	echo -e "$(color 'red' 'Install TouchUI within OctoPrint before continuing.')"
+	do_exit
+fi

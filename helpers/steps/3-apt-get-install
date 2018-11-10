@@ -21,7 +21,7 @@ then
 
 	echo ""
 	echo "Installing dependencies:"
-	apt-get install $DEPENDENCIES
+	apt-get install --no-install-recommends $DEPENDENCIES
 	successfull $?
 else
 	echo "Skipping installation of dependencies:"
