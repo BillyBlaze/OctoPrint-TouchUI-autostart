@@ -1,7 +1,6 @@
 #!/bin/bash
 . $DIR/functions
 
-OCTOPRINT_CONFIG="/home/pi/.octoprint/config.yaml"
 eval $(parse_yaml $OCTOPRINT_CONFIG "octoprint_")
 echo ""
 if [ -z "$octoprint_accessControl_autologinAs" ]

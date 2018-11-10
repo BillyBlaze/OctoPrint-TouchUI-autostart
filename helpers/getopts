@@ -2,15 +2,17 @@
 BROWSER=""
 FORCE=""
 XORG_DIR=""
+OCTOPRINT_CONFIG=""
 
 HELP="Usage: install [options]
 
 Valid options:
   General options:
-    -h, --help             : display this usage information
-    -f, --force            : disable exit when a command fails and continue the next step
-    -b, --browser <value>  : overwrite which browser needs to be installed
-    -x, --xorg <value>     : overwrite folder of xserver to search for existing config files
+    -h, --help               : display this usage information
+    -f, --force              : disable exit when a command fails and continue the next step
+    -b, --browser <value>    : overwrite which browser needs to be installed
+    -x, --xorg <value>       : overwrite folder of xserver to search for existing config files
+    -o, --octoprint <value>  : overwrite folder of xserver to search for existing config files
 "
 
 POSITIONAL=()
@@ -30,6 +32,11 @@ do
 		;;
 		-x|--xorg)
 		XORG_DIR="$2"
+		shift # past argument
+		shift # past value
+		;;
+		-o|--octoprint)
+		OCTOPRINT_CONFIG="$2"
 		shift # past argument
 		shift # past value
 		;;
