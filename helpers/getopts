@@ -3,6 +3,7 @@ BROWSER=""
 FORCE=""
 XORG_DIR=""
 OCTOPRINT_CONFIG=""
+SKIP_GLDRIVER=""
 
 HELP="Usage: install [options]
 
@@ -10,6 +11,7 @@ Valid options:
   General options:
     -h, --help               : display this usage information
     -f, --force              : disable exit when a command fails and continue the next step
+    -d, --disable-gldriver   : disable gl-driver beeing set on stretch envoriments
     -b, --browser <value>    : overwrite which browser needs to be installed
     -x, --xorg <value>       : overwrite folder of xserver to search for existing config files
     -o, --octoprint <value>  : overwrite folder of xserver to search for existing config files
@@ -21,6 +23,10 @@ do
 	key="$1"
 
 	case $key in
+		-d|--disable-gldriver)
+		SKIP_GLDRIVER=true
+		shift # past argument
+		;;
 		-f|--force)
 		FORCE=true
 		shift # past argument

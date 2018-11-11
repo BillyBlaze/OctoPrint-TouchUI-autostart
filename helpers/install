@@ -10,6 +10,7 @@ DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 [ "$FORCE" == "" ] && FORCE=false
 [ "$XORG_DIR" == "" ] && XORG_DIR="/usr/share/X11/xorg.conf.d"
 [ "$OCTOPRINT_CONFIG" == "" ] && OCTOPRINT_CONFIG="/home/pi/.octoprint/config.yaml"
+[ "$SKIP_GLDRIVER" == "" ] && SKIP_GLDRIVER=false
 
 # Enforce this helper to be run as root
 if [ $(id -u) -ne 0 ]
