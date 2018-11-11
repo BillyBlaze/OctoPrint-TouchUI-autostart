@@ -1,6 +1,19 @@
 #!/bin/bash
 . $DIR/functions
 
+# Check if stretch is installed and force GLDriver for Chromium
+DEB_VERSION=$(cat /etc/os-release | grep -P 'VERSION_ID="([0-9]+)"')
+if [ "$DEB_VERSION" == 'VERSION_ID="9"' ]
+then
+	echo ""
+	echo "Detected Stretch build!"
+	echo "Enabling GLDriver 'G1 GL (Full KMS)' for Stretch:";
+	raspi-config nonint do_gldriver G1
+	successfull $?
+fi
+
+# Check if kernel can run chromium-browser
+# Legacy code for WaveShare
 if [ "$BROWSER" == "chromium-browser" ]
 then
 	if [ -n "$(chromium-browser 2>&1 | grep 'undefined symbol: mmal_vc_init_fd')" ]

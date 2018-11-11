@@ -1,8 +1,9 @@
 #!/bin/bash
 . $DIR/functions
+. $DIR/get_can_expanded
 
 # Check if file system is expanded.
-if [ -z "$(mount | grep mmcblk0p2)" ]
+if [ "$(get_can_expand)" == 1 ]
 then
 	echo ""
 	echo -e "$(color 'red' 'Expand your file system before running this helper.')"

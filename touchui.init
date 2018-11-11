@@ -2,7 +2,7 @@
 
 ### BEGIN INIT INFO
 # Provides:           touchui
-# Required-Start:
+# Required-Start:     $all octoprint haproxy
 # Required-Stop:
 # Should-Start:
 # Should-Stop:

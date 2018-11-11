@@ -1,5 +1,7 @@
 #!/bin/bash
 . $DIR/functions
+
+# Get active framebuffer, assume the highest is active
 FB="$(ls /dev/ | grep fb | tail -1)"
 
 echo ""

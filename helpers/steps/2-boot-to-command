@@ -1,19 +1,10 @@
 #!/bin/bash
 . $DIR/functions
 
-if [ -e /etc/init.d/lightdm ]
+if [ "$(systemctl get-default)" == "graphical.target" ]
 then
 	echo ""
 	echo "Boot to command line:"
-	update-rc.d lightdm disable 2
+	raspi-config nonint do_boot_behaviour B1 2>&1
 	successfull $?
-
-	if [ -e /etc/profile.d/boottoscratch.sh ]
-	then
-		rm -f /etc/profile.d/boottoscratch.sh
-		sed -i /etc/inittab \
-			-e "s/^#\(.*\)#\s*BTS_TO_ENABLE\s*/\1/" \
-			-e "/#\s*BTS_TO_DISABLE/d"
-		telinit q
-	fi
 fi
