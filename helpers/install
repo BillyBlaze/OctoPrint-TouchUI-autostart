@@ -1,6 +1,11 @@
 #!/bin/bash
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
+[ 1 == 1 ] && DEPENDENCIES+=("xinit" "" OFF)
+
+echo "${DEPENDENCIES[@]}"
+exit 1
+
 # Default variables
 DEBUG=false
 BROWSER="chromium-browser"

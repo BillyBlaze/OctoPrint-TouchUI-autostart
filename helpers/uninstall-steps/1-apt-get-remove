@@ -2,14 +2,14 @@
 source $DIR/functions/successfull
 source $DIR/functions/check_package
 
-[ $(check_package xinit) == 1 ] && DEPENDENCIES+=("xinit") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package xinput) == 1 ] && DEPENDENCIES+=("xinput") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package xserver-xorg) == 1 ] && DEPENDENCIES+=("xserver-xorg") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package xserver-xorg-video-fbdev) == 1 ] && DEPENDENCIES+=("xserver-xorg-video-fbdev") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package x11-xserver-utils) == 1 ] && DEPENDENCIES+=("x11-xserver-utils") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package matchbox) == 1 ] && DEPENDENCIES+=("matchbox") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package unclutter) == 1 ] && DEPENDENCIES+=("unclutter") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
-[ $(check_package $BROWSER) == 1 ] && DEPENDENCIES+=("$BROWSER") && DEPENDENCIES+=("") && DEPENDENCIES+=(OFF)
+[ $(check_package xinit) == 1 ] && DEPENDENCIES+=("xinit" "" OFF)
+[ $(check_package xinput) == 1 ] && DEPENDENCIES+=("xinput" "" OFF)
+[ $(check_package xserver-xorg) == 1 ] && DEPENDENCIES+=("xserver-xorg" "" OFF)
+[ $(check_package xserver-xorg-video-fbdev) == 1 ] && DEPENDENCIES+=("xserver-xorg-video-fbdev" "" OFF)
+[ $(check_package x11-xserver-utils) == 1 ] && DEPENDENCIES+=("x11-xserver-utils" "" OFF)
+[ $(check_package matchbox) == 1 ] && DEPENDENCIES+=("matchbox" "" OFF)
+[ $(check_package unclutter) == 1 ] && DEPENDENCIES+=("unclutter" "" OFF)
+[ $(check_package $BROWSER) == 1 ] && DEPENDENCIES+=("$BROWSER" "" OFF)
 
 if [ ${#DEPENDENCIES[@]} -ne 0 ]
 then
