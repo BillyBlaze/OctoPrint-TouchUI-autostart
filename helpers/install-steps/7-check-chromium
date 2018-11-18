@@ -1,5 +1,6 @@
 #!/bin/bash
-. $DIR/functions
+source $DIR/functions/do_exit
+source $DIR/functions/color
 
 # Check if stretch is installed and force GLDriver for Chromium
 if [ "$SKIP_GLDRIVER" == false ]
@@ -10,8 +11,7 @@ then
 		echo ""
 		echo "Detected Stretch build!"
 		echo "Enabling GLDriver 'G1 GL (Full KMS)' for Stretch:";
-		raspi-config nonint do_gldriver G1
-		successfull $?
+		runCmd raspi-config nonint do_gldriver G1
 	fi
 fi
 

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+do_exit() {
+	if [ "$FORCE" == false ]
+	then
+		exit 1
+	fi
+}

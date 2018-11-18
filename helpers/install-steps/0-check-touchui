@@ -1,5 +1,6 @@
 #!/bin/bash
-. $DIR/functions
+source $DIR/functions/do_exit
+source $DIR/functions/color
 
 if [ -z $(find /home/ -type f -name 'touchui.bundled.js*') ]
 then

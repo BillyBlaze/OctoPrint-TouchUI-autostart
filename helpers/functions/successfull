@@ -1,0 +1,13 @@
+#!/bin/bash
+source $DIR/functions/do_exit
+source $DIR/functions/color
+
+successfull () {
+	if [ $1 -eq 0 ]
+	then
+		echo -e " - $(color 'green' 'success')"
+	else
+		echo -e " - $(color 'red' 'failed')"
+		do_exit
+	fi
+}

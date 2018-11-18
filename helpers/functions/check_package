@@ -1,0 +1,11 @@
+#!/bin/bash
+
+check_package() {
+	local check=$(dpkg -s $1 2>&1 | grep "Status: install ok")
+	if [ -z "$check" ]
+	then
+		echo 0
+	else
+		echo 1
+	fi
+}

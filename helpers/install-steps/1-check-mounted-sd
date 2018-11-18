@@ -1,12 +1,13 @@
 #!/bin/bash
-. $DIR/functions
-. $DIR/get_can_expanded
+source $DIR/functions/do_exit
+source $DIR/functions/get_can_expand
+source $DIR/functions/color
 
 # Check if file system is expanded.
 if [ "$(get_can_expand)" == 1 ]
 then
 	echo ""
 	echo -e "$(color 'red' 'Expand your file system before running this helper.')"
-	echo -e "$(color 'red' 'Run `sudo raspi-config`')"
+	echo -e "$(color 'red' 'Run `sudo raspi-config` and select `Expand filesystem`')"
 	do_exit
 fi

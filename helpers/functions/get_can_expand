@@ -35,18 +35,18 @@ get_can_expand() {
 	PART_NUM=${ROOT_PART#mmcblk0p}
 	if [ "$PART_NUM" = "$ROOT_PART" ]; then
 		echo 1
-		exit
+		return
 	fi
 
 	if [ "$PART_NUM" -ne 2 ]; then
 		echo 1
-		exit
+		return
 	fi
 
 	LAST_PART_NUM=$(parted /dev/mmcblk0 -ms unit s p | tail -n 1 | cut -f 1 -d:)
 	if [ $LAST_PART_NUM -ne $PART_NUM ]; then
 		echo 1
-		exit
+		return
 	fi
 
 	echo 0

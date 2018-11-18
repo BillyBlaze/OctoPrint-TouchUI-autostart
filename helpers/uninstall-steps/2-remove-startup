@@ -1,0 +1,24 @@
+#!/bin/bash
+source $DIR/functions/successfull
+
+echo ""
+echo "Removing touchui from update-rc.d:"
+runCmd update-rc.d touchui remove
+successfull $?
+runCmd systemctl daemon-reload
+
+if [ -e /etc/init.d/touchui ]
+then
+	echo ""
+	echo "Removing '/etc/init.d/touchui':"
+	runCmd rm /etc/init.d/touchui
+	successfull $?
+fi
+
+if [ -e /etc/default/touchui ]
+then
+	echo ""
+	echo "Removing '/etc/default/touchui':"
+	runCmd rm /etc/default/touchui
+	successfull $?
+fi

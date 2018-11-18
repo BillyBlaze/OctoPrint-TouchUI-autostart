@@ -1,0 +1,41 @@
+#!/bin/bash
+source $DIR/functions/successfull
+source $DIR/functions/parse_yaml
+
+eval $(parse_yaml $OCTOPRINT_CONFIG "octoprint_")
+echo ""
+if [ -z "$octoprint_accessControl_autologinAs" ]
+then
+	OCTOPRINT_USER=$(whiptail --inputbox \
+		"Insert the username that can auto login into OctoPrint (Leave this empty to skip this step)" \
+		8 78 --title "Setup autoLogin for localhost" 3>&1 1>&2 2>&3)
+
+	if [ -n "$OCTOPRINT_USER" ]
+	then
+		echo "Saving autoLogin to config ($OCTOPRINT_CONFIG)"
+		NEW="accessControl:\n  autologinLocal: true\n  autologinAs: $OCTOPRINT_USER"
+
+		if [ -n "$(cat $OCTOPRINT_CONFIG | grep accessControl)" ]
+		then
+			runCmd sed -i -e "s/accessControl:/$NEW/g" $OCTOPRINT_CONFIG
+			successfull $?
+		else
+			echo "$NEW" >> $OCTOPRINT_CONFIG
+			successfull $?
+		fi
+
+		if (whiptail --yesno "Can we restart OctoPrint? (If not; you need to restart OctoPrint manually before you can make use of the autoLogin configuration)" 8 78)
+		then
+			echo ""
+			echo "Restarting OctoPrint:"
+			runCmd service octoprint restart
+			successfull $?
+		fi
+	else
+		echo "Skipping setup autoLogin for localhost:"
+		echo " - Cancelled by user"
+	fi
+else
+	echo "Skipping setup autoLogin for localhost:"
+	echo " - Login as '$octoprint_accessControl_autologinAs' already configured"
+fi

@@ -1,20 +1,15 @@
 #!/bin/bash
-BROWSER=""
-FORCE=""
-XORG_DIR=""
-OCTOPRINT_CONFIG=""
-SKIP_GLDRIVER=""
-
-HELP="Usage: install [options]
+HELP="Usage: [install|uninstall] [options]
 
 Valid options:
   General options:
+    --debug                  : disable supressing of output
     -h, --help               : display this usage information
     -f, --force              : disable exit when a command fails and continue the next step
     -d, --disable-gldriver   : disable gl-driver beeing set on stretch envoriments
     -b, --browser <value>    : overwrite which browser needs to be installed
     -x, --xorg <value>       : overwrite folder of xserver to search for existing config files
-    -o, --octoprint <value>  : overwrite folder of xserver to search for existing config files
+    -o, --octoprint <value>  : overwrite location of octoprint config yaml file
 "
 
 POSITIONAL=()
@@ -23,6 +18,10 @@ do
 	key="$1"
 
 	case $key in
+		--debug)
+		DEBUG=true
+		shift # past argument
+		;;
 		-d|--disable-gldriver)
 		SKIP_GLDRIVER=true
 		shift # past argument
@@ -59,3 +58,12 @@ do
 	esac
 done
 set -- "${POSITIONAL[@]}"
+
+runCmd() {
+	if [ $DEBUG == true ]
+	then
+		"$@"
+	else
+		"$@" >/dev/null 2>&1
+	fi
+}

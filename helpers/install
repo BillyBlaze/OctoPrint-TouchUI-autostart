@@ -1,24 +1,28 @@
 #!/bin/bash
 DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
-# Get CLI override (e.g. -browser my-browser or --force)
-. $DIR/getopts
-. $DIR/functions
+# Default variables
+DEBUG=false
+BROWSER="chromium-browser"
+FORCE=false
+XORG_DIR="/usr/share/X11/xorg.conf.d"
+OCTOPRINT_CONFIG="/home/pi/.octoprint/config.yaml"
+SKIP_GLDRIVER=false
 
-# If CLI override is null, set default
-[ "$BROWSER" == "" ] && BROWSER="chromium-browser"
-[ "$FORCE" == "" ] && FORCE=false
-[ "$XORG_DIR" == "" ] && XORG_DIR="/usr/share/X11/xorg.conf.d"
-[ "$OCTOPRINT_CONFIG" == "" ] && OCTOPRINT_CONFIG="/home/pi/.octoprint/config.yaml"
-[ "$SKIP_GLDRIVER" == "" ] && SKIP_GLDRIVER=false
+# Get CLI override (e.g. -browser my-browser or --force)
+source $DIR/functions/getopts
+
+# Load local functions
+source $DIR/functions/successfull
+source $DIR/functions/color
 
 # Enforce this helper to be run as root
 if [ $(id -u) -ne 0 ]
 then 
 	echo -e ""
-	echo -e " $(color 'red' 'Run this with \e[1msudo\e[0m\e[31m or as an \e[1muser root')" 2>&1
-	echo -e " $(color 'red' 'Since we need to install and configure packages')" 2>&1
-	echo -e " $(color 'red' 'sudo IS needed here!')" 2>&1
+	echo -e " $(color 'red' 'Run this with \e[1msudo\e[0m\e[31m or as an \e[1muser root')"
+	echo -e " $(color 'red' 'Since we need to install and configure packages')"
+	echo -e " $(color 'red' 'sudo IS needed here!')"
 	echo -e ""
 	exit 1
 fi
@@ -28,37 +32,36 @@ echo -e "$(color 'touchui' ' ╔╦╗╔═╗╦ ╦╔═╗╦ ╦╦ ╦╦
 echo -e "$(color 'touchui' '  ║ ║ ║║ ║║  ╠═╣║ ║║ ')"
 echo -e "$(color 'touchui' '  ╩ ╚═╝╚═╝╚═╝╩ ╩╚═╝╩ ')"
 echo -e "$(color 'touchui' 'Install helper v0.0.1')"
-[ $FORCE == true ] && echo -e "$(color 'touchui' 'Force mode enabled')"
+[ $FORCE == true ] && echo -e "$(color 'touchui' 'FORCE mode enabled')"
+[ $DEBUG == true ] && echo -e "$(color 'touchui' 'DEBUG mode enabled')"
 
 # Stop TouchUI if it's active
-service touchui stop >/dev/null 2>&1
+runCmd service touchui stop
 
 # Execute steps
-. $DIR/steps/0-check-touchui
-. $DIR/steps/1-check-mounted-sd
-. $DIR/steps/2-boot-to-command
-. $DIR/steps/3-apt-get-install
-. $DIR/steps/4-xorg-setup
-. $DIR/steps/5-setup-startup
-. $DIR/steps/6-setup-autologin-as
+source $DIR/install-steps/0-check-touchui
+source $DIR/install-steps/1-check-mounted-sd
+source $DIR/install-steps/2-boot-to-command
+source $DIR/install-steps/3-apt-get-install
+source $DIR/install-steps/4-xorg-setup
+source $DIR/install-steps/5-setup-startup
+source $DIR/install-steps/6-setup-autologin-as
 
-# Legacy
+# Legacy Xserver
 # Try to set Xwrapper.config
-sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config >/dev/null 2>&1
+runCmd sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
 
 # Show success message
 echo ""
-echo "TouchUI is successfully installed, Do not remove the directory"
-echo "'~/TouchUI-autostart' and if you change the path of this directory"
-echo "then edit the file '/etc/default/touchui' with the new path."
+echo "$(color 'green' 'TouchUI is successfully installed, Do not remove the directory')"
+echo "$(color 'green' ''~/TouchUI-autostart' and if you change the path of this directory')"
+echo "$(color 'green' 'then edit the file '/etc/default/touchui' with the new path.')"
 
 # Finally check if chromium-browser is able to run with the kernel
-. $DIR/steps/7-check-chromium
+source $DIR/install-steps/7-check-chromium
 
 # Launch TouchUI
 echo ""
 echo "Launching TouchUI:"
-service touchui start
+runCmd service touchui start
 successfull $?
-
-exit 0
