@@ -19,12 +19,18 @@ AUTODETECT_PORT=true
 # Load touchui settings for getting $TOUCHUI_USER and $FORCE_TOUCH
 [ -r /etc/default/touchui ] && . /etc/default/touchui
 
+#CONFIG_DIR=/home/$TOUCHUI_USER/.config/chromium/
+CONFIG_DIR=/run/chromium/
+
+mkdir -p $CONFIG_DIR
+chown -R $TOUCHUI_USER:$TOUCHUI_USER $CONFIG_DIR
+
 # Remove restore last session after crash in Chrome
-sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
-sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' $CONFIG_DIR/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' $CONFIG_DIR/Default/Preferences
 # And another one for not minified Preferences (Chrome legacy)
-sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
-sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' /home/$TOUCHUI_USER/.config/chromium/Default/Preferences
+sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' $CONFIG_DIR/Default/Preferences
+sed -i 's/"exit_type": "Crashed"/"exit_type": "None"/' $CONFIG_DIR/Default/Preferences
 
 # Check if OctoPi is used
 OCTOPI_FILE="/etc/octopi_version"
@@ -79,10 +85,10 @@ fi
 TOUCHUI_DIR="/home/$TOUCHUI_USER/$TOUCHUI_DIR"
 CHROME_VERSION=$(dpkg -s chromium-browser | grep "Version: " | sed -e 's/Version: //g')
 CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
-				--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1048576
+				--dns-prefetch-disable --disable-sync-preferences --disk-cache-size=1 --disk-cache-dir=/dev/null
 				--disable-java --disable-plugins --disable-extensions --disable-infobars
 				--user-agent='TouchUI (X11, Chrome $CHROME_VERSION$OCTOPI) (P:$PORT)'
-				--start-maximized --window-position=0,0 
+				--start-maximized --window-position=0,0 --user-data-dir=$CONFIG_DIR
 				http://localhost:$TOUCHUI_PORT/"
 
 [ -r $TOUCHUI_DIR/calibration.sh ] && . $TOUCHUI_DIR/calibration.sh
