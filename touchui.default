@@ -42,3 +42,6 @@ DISABLE_SCREENSAVER=false
 
 # Autodetect OctoPi port number
 AUTODETECT_PORT=true
+
+# Path for the profile - defaults to ram disk to reduce writes
+#CONFIG_DIR=/run/touchui-chromium/
