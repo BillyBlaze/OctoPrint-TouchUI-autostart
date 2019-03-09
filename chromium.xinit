@@ -8,6 +8,7 @@ TOUCHUI_PORT="8888"
 TOUCHUI_EXECUTE="matchbox-window-manager & unclutter -idle 0.1 &"
 CHROME_BIN="chromium-browser"
 AUTODETECT_PORT=true
+CONFIG_DIR=/run/touchui-chromium/
 
 # Uncomment the next variable to generate a full log under ~/.config/chromium/chrome_debug.log
 # or to enable the remote deugger, forward port by haproxy or by tunnel
@@ -18,9 +19,6 @@ AUTODETECT_PORT=true
 
 # Load touchui settings for getting $TOUCHUI_USER and $FORCE_TOUCH
 [ -r /etc/default/touchui ] && . /etc/default/touchui
-
-#CONFIG_DIR=/home/$TOUCHUI_USER/.config/chromium/
-CONFIG_DIR=/run/chromium/
 
 mkdir -p $CONFIG_DIR
 chown -R $TOUCHUI_USER:$TOUCHUI_USER $CONFIG_DIR
