@@ -31,7 +31,7 @@ fi
 echo -e "$(color 'touchui' ' ╔╦╗╔═╗╦ ╦╔═╗╦ ╦╦ ╦╦ ')"
 echo -e "$(color 'touchui' '  ║ ║ ║║ ║║  ╠═╣║ ║║ ')"
 echo -e "$(color 'touchui' '  ╩ ╚═╝╚═╝╚═╝╩ ╩╚═╝╩ ')"
-echo -e "$(color 'touchui' 'Install helper v0.0.1')"
+echo -e "$(color 'touchui' 'Install helper v0.0.2')"
 [ $FORCE == true ] && echo -e "$(color 'touchui' 'FORCE mode enabled')"
 [ $DEBUG == true ] && echo -e "$(color 'touchui' 'DEBUG mode enabled')"
 
