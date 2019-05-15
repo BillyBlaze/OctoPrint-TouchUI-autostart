@@ -6,7 +6,7 @@ Valid options:
     --debug                  : disable supressing of output
     -h, --help               : display this usage information
     -f, --force              : disable exit when a command fails and continue the next step
-    -d, --disable-gldriver   : disable gl-driver beeing set on stretch envoriments
+    -d, --enable-gldriver    : enable gl-driver beeing set on stretch envoriments
     -b, --browser <value>    : overwrite which browser needs to be installed
     -x, --xorg <value>       : overwrite folder of xserver to search for existing config files
     -o, --octoprint <value>  : overwrite location of octoprint config yaml file
@@ -22,8 +22,8 @@ do
 		DEBUG=true
 		shift # past argument
 		;;
-		-d|--disable-gldriver)
-		SKIP_GLDRIVER=true
+		-d|--enable-gldriver)
+		ENABLE_GLDRIVER=true
 		shift # past argument
 		;;
 		-f|--force)
