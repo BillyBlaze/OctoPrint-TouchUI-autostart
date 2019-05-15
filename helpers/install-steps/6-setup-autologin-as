@@ -24,7 +24,13 @@ then
 			successfull $?
 		fi
 
-		if (whiptail --yesno "Can we restart OctoPrint? (If not; you need to restart OctoPrint manually before you can make use of the autoLogin configuration)" 8 78)
+		sleep 1
+
+		RESTART_OCTOPRINT=$(whiptail --yesno \
+			"Can we restart OctoPrint? (If not; you need to restart OctoPrint manually before you can make use of the autoLogin configuration)" \
+			8 78 3>&1 1>&2 2>&3)
+
+		if [ -n "$RESTART_OCTOPRINT" ]
 		then
 			echo ""
 			echo "Restarting OctoPrint:"
