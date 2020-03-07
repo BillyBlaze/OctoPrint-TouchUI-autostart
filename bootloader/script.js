@@ -10,10 +10,10 @@
 
 	var pingUrl = prefix + "plugin/touchui/ping";
 	var pass = 0;
-	var retry = 0;
 	var checkTimeout;
+	var removeTimeout;
 	
-	var version = 2;
+	var version = 3;
 	
 	var setMsg = function(title, subtitle, className) {
 		progress.innerHTML = title;
@@ -35,9 +35,12 @@
 	}
 
 	content.onload = function() {
-		setTimeout(function() {
+		// wait 30 seconds before hidding bootloader
+		// normally TouchUI will indicate it has been loaded
+		// however if TouchUI fails to load this will continue to OctoPrint
+		removeTimeout = setTimeout(function() {
 			setMsg("", "", "hide");
-		}, 100);
+		}, 30000); 
 	}
 
 	document.addEventListener("click", function() {
@@ -82,6 +85,7 @@
 					//TouchUI is ready and has same version
 					} else { 
 						setMsg("", "", "hide");
+						clearTimeout(removeTimeout);
 						return;
 					}
 				}

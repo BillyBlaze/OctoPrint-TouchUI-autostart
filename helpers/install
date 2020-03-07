@@ -31,7 +31,7 @@ fi
 echo -e "$(color 'touchui' ' ╔╦╗╔═╗╦ ╦╔═╗╦ ╦╦ ╦╦ ')"
 echo -e "$(color 'touchui' '  ║ ║ ║║ ║║  ╠═╣║ ║║ ')"
 echo -e "$(color 'touchui' '  ╩ ╚═╝╚═╝╚═╝╩ ╩╚═╝╩ ')"
-echo -e "$(color 'touchui' 'Install helper v0.0.2')"
+echo -e "$(color 'touchui' 'Install helper v0.0.3')"
 [ $FORCE == true ] && echo -e "$(color 'touchui' 'FORCE mode enabled')"
 [ $DEBUG == true ] && echo -e "$(color 'touchui' 'DEBUG mode enabled')"
 
@@ -49,12 +49,12 @@ source $DIR/install-steps/6-setup-autologin-as
 
 # Legacy Xserver
 # Try to set Xwrapper.config
-runCmd sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
+sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config 3>/dev/null 1>/dev/null 2>/dev/null
 
 # Show success message
 echo ""
 echo "$(color 'green' 'TouchUI is successfully installed, Do not remove the directory')"
-echo "$(color 'green' ''~/TouchUI-autostart' and if you change the path of this directory')"
+echo "$(color 'green' ''~/TouchUI-autostart/' and if you change the path of this directory')"
 echo "$(color 'green' 'then edit the file '/etc/default/touchui' with the new path.')"
 
 # Finally check if chromium-browser is able to run with the kernel

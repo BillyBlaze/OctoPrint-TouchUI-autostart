@@ -12,6 +12,9 @@ TOUCHUI_FILE="chromium.xinit"
 # TouchUI server port
 TOUCHUI_PORT="8888"
 
+# Touch server host
+TOUCHUI_URL="http://localhost:$TOUCHUI_PORT/"
+
 # Command to hide cursor and window-manager before launching chromium
 #TOUCHUI_EXECUTE=""
 

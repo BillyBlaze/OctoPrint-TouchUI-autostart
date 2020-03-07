@@ -1,10 +1,13 @@
 #!/bin/sh
 
 # DEFAULT VARIABLES
+# DO NOT EDIT THESE!!
+# EDIT THESE VARIABLES IN '/etc/default/touchui'
 TOUCHUI_ARGS=""
 TOUCHUI_DEBUG=""
 TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 TOUCHUI_PORT="8888"
+TOUCHUI_URL="http://localhost:$TOUCHUI_PORT/"
 TOUCHUI_EXECUTE="matchbox-window-manager & unclutter -idle 0.1 &"
 CHROME_BIN="chromium-browser"
 AUTODETECT_PORT=true
@@ -87,7 +90,7 @@ CHROME_ARGS="	--no-first-run --kiosk $TOUCHUI_ARGS $TOUCHUI_DEBUG
 				--disable-java --disable-plugins --disable-extensions --disable-infobars
 				--user-agent='TouchUI (X11, Chrome $CHROME_VERSION$OCTOPI) (P:$PORT)'
 				--start-maximized --window-position=0,0 --user-data-dir=$CONFIG_DIR
-				http://localhost:$TOUCHUI_PORT/"
+				$TOUCHUI_URL"
 
 [ -r $TOUCHUI_DIR/calibration.sh ] && . $TOUCHUI_DIR/calibration.sh
 
