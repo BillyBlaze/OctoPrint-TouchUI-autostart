@@ -21,8 +21,8 @@ else
 	then
 		echo "Saving autoLogin to config ($OCTOPRINT_CONFIG)"
 
-		runCmd runCmd su - $OCTOPRINT_EXEC_USER -c "$OCTOPRINT_EXEC config set --bool accessControl.autologinLocal true"
-		runCmd runCmd su - $OCTOPRINT_EXEC_USER -c "$OCTOPRINT_EXEC config set accessControl.autologinAs $OCTOPRINT_USER"
+		runCmd su - $OCTOPRINT_EXEC_USER -c "$OCTOPRINT_EXEC config set --bool accessControl.autologinLocal true"
+		runCmd su - $OCTOPRINT_EXEC_USER -c "$OCTOPRINT_EXEC config set accessControl.autologinAs $OCTOPRINT_USER"
 
 		CAN_REBOOT=$(whiptail \
 			--yesno "Can we restart OctoPrint? (If not; you need to restart OctoPrint manually before you can make use of the autoLogin configuration)" 8 78 3>&1 1>&2 2>&3)
