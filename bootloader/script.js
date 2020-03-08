@@ -29,9 +29,8 @@
 			"#progress { color: " + localStorage["mainColor"] + "; }" +
 			"#error { color: " + localStorage["mainColor"] + "; }" +
 			"body { background: " + localStorage["bgColor"] + "; }" +
-			"#progress span { background: " + localStorage["mainColor"] + "; color: " + localStorage["bgColor"] + "; " +
 			"#info { color: " + localStorage["mainColor"] + "; }" +
-		"}";
+			"#progress span { background: " + localStorage["mainColor"] + "; color: " + localStorage["bgColor"] + "; }";
 	}
 
 	content.onload = function() {
@@ -98,6 +97,13 @@
 						localStorage["mainColor"] = event.data[1];
 						localStorage["bgColor"] = event.data[2];
 
+						document.getElementById("styling").innerHTML = "" +
+							"svg { fill: " + localStorage["mainColor"] + "; }" +
+							"#progress { color: " + localStorage["mainColor"] + "; }" +
+							"#error { color: " + localStorage["mainColor"] + "; }" +
+							"body { background: " + localStorage["bgColor"] + "; }" +
+							"#info { color: " + localStorage["mainColor"] + "; }" +
+							"#progress span { background: " + localStorage["mainColor"] + "; color: " + localStorage["bgColor"] + "; }";
 					}
 				}
 				break;
