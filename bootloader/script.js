@@ -2,26 +2,35 @@
 
 	var content = document.getElementById("content");
 	var progress = document.getElementById("progress");
+	var info = document.getElementById("info");
 	var error = document.getElementById("error");
+
 	var port = ((window.navigator.userAgent.match(/P:([0-9]+)/g) || [""])[0].replace("P:", "")) || 5000;
 
-	var url = (window.navigator.userAgent.indexOf("IPv6") !== -1) ? "http://[::1]" : "http://localhost";
-	var prefix = (port == "80") ? url + "/" : url + ":"+port+"/";
-
-	var pingUrl = prefix + "plugin/touchui/ping";
 	var pass = 0;
 	var checkTimeout;
 	var removeTimeout;
 	
 	var version = 3;
+
+	var getBaseUrl = function() {
+		var _port = (port === "80") ? "/" : ":" + port + "/";
+		return ((window.navigator.userAgent.indexOf("IPv6") !== -1) ? "http://[::1]" : "http://localhost") + _port;
+	}
+
+	var getUrl = function(isPing) {
+		if (isPing) {
+			return getBaseUrl() + "plugin/touchui/ping";
+		}
+
+		return getBaseUrl();
+	}
 	
 	var setMsg = function(title, subtitle, className) {
 		progress.innerHTML = title;
 		error.innerHTML = subtitle;
 		document.body.className = className;
 	}
-
-	document.getElementById("info").innerHTML = "Connecting to " + prefix;
 	
 	if (localStorage["mainColor"] && localStorage["bgColor"]) {
 		document.getElementById("styling").innerHTML = "" +
@@ -112,7 +121,7 @@
 
 	function reqListener () {
 		setMsg("Loading OctoPrint", "", "");
-		content.setAttribute("src", prefix);
+		content.setAttribute("src", getUrl());
 	}
 
 	function processRequest() {
@@ -126,9 +135,9 @@
 
 		var oReq = new XMLHttpRequest();
 		oReq.addEventListener('load', reqListener);
-		oReq.addEventListener('error', doRequest);
-		oReq.addEventListener('abort', doRequest);
-		oReq.open("get", pingUrl, true);
+		oReq.addEventListener('error', doRequest.bind(oReq));
+		oReq.addEventListener('abort', doRequest.bind(oReq));
+		oReq.open("get", getUrl(true), true);
 		oReq.send();
 	}
 
@@ -137,6 +146,7 @@
 		
 		if(pass > 0) {
 			progress.innerHTML = "<span id=\"badge\">" + pass + "</span> Connecting to TouchUI";
+			info.innerHTML = "Connecting to " + getUrl();
 		}
 	};
 

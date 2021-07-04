@@ -6,8 +6,13 @@ source $DIR/functions/color
 # Check if file system is expanded.
 if [ "$(get_can_expand)" == 1 ]
 then
-	echo ""
-	echo -e "$(color 'red' 'Expand your file system before running this helper.')"
-	echo -e "$(color 'red' 'Run `sudo raspi-config` and select `Expand filesystem`')"
-	do_exit
+	if [ "$SKIP_SD_CHECK" == false ]
+	then
+		echo ""
+		echo -e "$(color 'red' 'Expand your file system before running this helper.')"
+		echo -e "$(color 'red' 'Run `sudo raspi-config` and select `Expand filesystem`')"
+		echo ""
+		echo -e "$(color 'red' 'Skip this step by running `install --skip-sd-check`')"
+		do_exit
+	fi
 fi

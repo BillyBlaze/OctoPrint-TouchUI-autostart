@@ -10,6 +10,7 @@ Valid options:
     -b, --browser <value>    : overwrite which browser needs to be installed
     -x, --xorg <value>       : overwrite folder of xserver to search for existing config files
     -o, --octoprint <value>  : overwrite location of octoprint config yaml file
+    -s, --skip-sd-check      : skip sd card check
 "
 
 POSITIONAL=()
@@ -28,6 +29,10 @@ do
 		;;
 		-f|--force)
 		FORCE=true
+		shift # past argument
+		;;
+		-s|--skip-sd-check)
+		SKIP_SD_CHECK=true
 		shift # past argument
 		;;
 		-b|--browser)

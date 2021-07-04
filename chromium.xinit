@@ -9,6 +9,7 @@ TOUCHUI_EXTRA='echo "TouchUI: screensaver enabled"'
 TOUCHUI_PORT="8888"
 TOUCHUI_URL="http://localhost:$TOUCHUI_PORT/"
 TOUCHUI_EXECUTE="matchbox-window-manager & unclutter -idle 0.1 &"
+TOUCUI_SERVER_TYPE="IPv4"
 CHROME_BIN="chromium-browser"
 AUTODETECT_PORT=true
 CONFIG_DIR=/run/touchui-chromium/
@@ -41,19 +42,7 @@ then
 	if [ -f "$OCTOPI_FILE" ]
 	then
 		echo "TouchUI: OctoPi detected"
-		ns=$(netstat -tlnp | grep ':80 ')
-
-		if [ -n "$(echo $ns | grep 'tcp ')" ]; then
-			OCTOPI=" IPv4"
-			PORT="80"
-			echo "TouchUI: haproxy has a listening IPv4 socket."
-		fi
-
-		if [ -n "$(echo $ns | grep 'tcp6 ')" ]; then
-			OCTOPI=" IPv6"
-			PORT="80"
-			echo "TouchUI: haproxy has a listening IPv6 socket."
-		fi
+		PORT="80"
 	fi
 fi
 

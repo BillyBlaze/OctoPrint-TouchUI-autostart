@@ -8,6 +8,7 @@ FORCE=false
 XORG_DIR="/usr/share/X11/xorg.conf.d"
 OCTOPRINT_CONFIG="/home/pi/.octoprint/config.yaml"
 ENABLE_GLDRIVER=false
+SKIP_SD_CHECK=false
 
 # Get CLI override (e.g. -browser my-browser or --force)
 source $DIR/functions/getopts
@@ -31,7 +32,7 @@ fi
 echo -e "$(color 'touchui' ' ╔╦╗╔═╗╦ ╦╔═╗╦ ╦╦ ╦╦ ')"
 echo -e "$(color 'touchui' '  ║ ║ ║║ ║║  ╠═╣║ ║║ ')"
 echo -e "$(color 'touchui' '  ╩ ╚═╝╚═╝╚═╝╩ ╩╚═╝╩ ')"
-echo -e "$(color 'touchui' 'Install helper v0.0.3')"
+echo -e "$(color 'touchui' 'Install helper v0.0.4')"
 [ $FORCE == true ] && echo -e "$(color 'touchui' 'FORCE mode enabled')"
 [ $DEBUG == true ] && echo -e "$(color 'touchui' 'DEBUG mode enabled')"
 
