@@ -10,25 +10,25 @@ BOOT=$(whiptail --radiolist "Configure options for start-up, select your option:
 
 if [ $? = 0 ]
 then
-	if [ $BOOT == "Console" ]; then
+	if [ "$BOOT" == "Console" ]; then
 		echo ""
 		echo "Boot to Console:"
 		runCmd raspi-config nonint do_boot_behaviour B1
 		successfull $?
 	fi
-	if [ $BOOT == "Console AutoLogin" ]; then
+	if [ "$BOOT" == "Console AutoLogin" ]; then
 		echo ""
 		echo "Boot to Console with AutoLogin:"
 		runCmd raspi-config nonint do_boot_behaviour B2
 		successfull $?
 	fi
-	if [ $BOOT == "Desktop" ]; then
+	if [ "$BOOT" == "Desktop" ]; then
 		echo ""
 		echo "Boot to Desktop:"
 		runCmd raspi-config nonint do_boot_behaviour B3
 		successfull $?
 	fi
-	if [ $BOOT == "Desktop AutoLogin" ]; then
+	if [ "$BOOT" == "Desktop AutoLogin" ]; then
 		echo ""
 		echo "Boot to Desktop with AutoLogin:"
 		runCmd raspi-config nonint do_boot_behaviour B4
