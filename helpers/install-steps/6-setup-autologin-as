@@ -5,7 +5,7 @@ OCTOPRINT_EXEC=$(ps -ef | grep octoprint | grep -v grep | awk '{print $9}')
 OCTOPRINT_EXEC_USER=$(ps -ef | grep octoprint | grep -v grep | awk '{print $1}')
 
 echo ""
-if [ -z $OCTOPRINT_EXEC ]
+if [ -z "$OCTOPRINT_EXEC" ]
 then
 	echo "Skipping setup autoLogin for localhost:"
 	echo " - OctoPrint exec path not found. Please create a ticket in GitHub!"
